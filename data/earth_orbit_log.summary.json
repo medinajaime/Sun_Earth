@@ -1,13 +1,15 @@
 {
-  "samples": 53280,
-  "dt_s": 600.0,
+  "name": "Earth",
+  "samples": 14059,
+  "dt_s": 2274.0076824583866,
+  "dt_mode": "fixed",
   "total_days": 370.0,
-  "k1_max_rel_error_pct": 7.272682430796381e-07,
-  "k1_r_rms_error_km": 0.6676178888821771,
+  "k1_max_rel_error_pct": 0.0018193099957223146,
+  "k1_r_rms_error_km": 1326.7126353333106,
   "k2_segment_hours": 6.0,
-  "k2_area_std_pct": 5.201753425790291e-13,
-  "k2_mean_area_Gm2": 48.11527350908003,
-  "k3_period_days": 365.25578867591537,
-  "k3_ratio_pct_err": 9.660236383987517e-07,
-  "energy_drift_pct": 2.389482171345638e-08
+  "k2_area_std_pct": 0.0005984371684030523,
+  "k2_mean_area_Gm2": 48.115980918862476,
+  "k3_period_days": 365.17670582627005,
+  "k3_ratio_pct_err": -0.04061550980532895,
+  "energy_drift_pct": 0.004198076392588472
 }
