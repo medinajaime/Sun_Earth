@@ -432,7 +432,7 @@ def compute_orbital_elements(rel_pos: vector, rel_vel: vector, mu: float) -> Dic
     k_vec = vector(0, 0, 1)
     n_vec = cross(k_vec, h_vec)
     n = mag(n_vec)
-    e_vec = ((v**2 - mu / r) * rel_pos - dot(rel_pos, rel_vel) * rel_vel) / mu
+    e_vec = ((rel_pos * (v**2 - mu / r)) - (rel_vel * dot(rel_pos, rel_vel))) / mu
     e = mag(e_vec)
     energy = 0.5 * v**2 - mu / r
     semi_major_axis = float("inf") if energy == 0 else -mu / (2 * energy)
@@ -869,7 +869,7 @@ class SolarSystemSimulation:
                 if dist_sq == 0:
                     continue
                 inv_r3 = 1.0 / (dist_sq * math.sqrt(dist_sq))
-                accel += (G * self.bodies[other_idx].definition.mass_kg) * rel * inv_r3
+                accel += rel * (G * self.bodies[other_idx].definition.mass_kg * inv_r3)
             accelerations.append(accel)
         return accelerations
 
@@ -1016,13 +1016,19 @@ class SolarSystemSimulation:
         accelerations = self._compute_accelerations(current_positions)
         new_positions: List[vector] = []
         for state, accel in zip(self.bodies, accelerations):
-            new_positions.append(state.position + state.velocity * dt + 0.5 * accel * dt**2)
+            new_positions.append(
+                    state.position
+                    + state.velocity * dt
+                    + accel * (0.5 * dt**2)
+)
+
         next_accelerations = self._compute_accelerations(new_positions)
         for idx, state in enumerate(self.bodies):
             accel = accelerations[idx]
             next_accel = next_accelerations[idx]
             state.position = new_positions[idx]
-            state.velocity = state.velocity + 0.5 * (accel + next_accel) * dt
+            state.velocity = state.velocity + (accel + next_accel) * (0.5 * dt)
+
         self.time_s += dt
         for state in self.bodies:
             if state.definition.orbit and state.mu:
